@@ -5,14 +5,12 @@
 #include <sys/time.h>
 #include <errno.h>
 #include <ndn-lite.h>
+#include "common.h"
 
 // TODO: I changed sender buffer size, hard coded
 
-#define DATA_BLOCK_SIZE 1024
-#define DATA_CHUNK_SIZE (DATA_BLOCK_SIZE + 256)
-
 ndn_name_t name_prefix;
-uint8_t buf[4096];
+uint8_t buf[DATA_CHUNK_SIZE];
 uint8_t (*chunks)[DATA_CHUNK_SIZE];
 size_t (*chunk_sizes);
 uint32_t chunks_num = 0;
@@ -57,6 +55,13 @@ int prepare_data(const char* filename){
 
   for(i = 0; !feof(file); i ++){
     cursz = fread(buf, 1, DATA_BLOCK_SIZE, file);
+    if(cursz == 0){
+      break; // This would happen when chunks_num == 25600
+    }
+    if(i >= chunks_num){
+      printf("ERROR: More chunks than expected.\n");
+      return 5;
+    }
     ret = tlv_make_data(chunks[i], DATA_CHUNK_SIZE, &chunk_sizes[i], 6,
                         TLV_DATAARG_NAME_PTR, &name_prefix,
                         TLV_DATAARG_NAME_SEGNO_U64, (uint64_t)i,

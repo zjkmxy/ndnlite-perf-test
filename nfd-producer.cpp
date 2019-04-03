@@ -4,6 +4,7 @@
 #include <functional>
 #include <unistd.h>
 #include <stdio.h>
+#include "common.h"
 using std::bind;
 using std::shared_ptr;
 using std::placeholders::_1;
@@ -11,8 +12,7 @@ using std::placeholders::_2;
 using std::placeholders::_3;
 using namespace ndn;
 
-const int DATA_BLOCK_SIZE = 1024;
-uint8_t buf[4096];
+uint8_t buf[DATA_CHUNK_SIZE];
 
 class Producer
 {
