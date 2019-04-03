@@ -13,12 +13,14 @@
 #include <thread>
 #include <pthread.h>
 #include <ndn-lite.h>
+#include <ndn-lite/encode/forwarder-helper.h>
 
 const int INTEREST_BUFSIZE = 100;
+const int DATA_BUFSIZE = 65536;
 ndn_name_t namePrefix;
 int maxCount;
 int sock;
-uint8_t buf[4096];
+uint8_t buf[65536];
 uint8_t (*interest)[INTEREST_BUFSIZE];
 size_t (*interest_size);
 
@@ -40,9 +42,23 @@ private:
 void receive(){
   int i = 0;
   ssize_t ret = 0;
-  while(i < maxCount){
-    ret = recv(sock, buf, i < 0x100 ? 1120 : 1121, 0);
-    i ++;
+  uint8_t *ptr, *val, *end;
+  uint32_t type, len;
+  ptr = buf;
+  while(i < maxCount || ptr != buf){
+    ret = recv(sock, buf, DATA_BUFSIZE, 0);
+    end = buf + ret;
+    while(ptr < end){
+      val = tlv_get_type_length(ptr, end - ptr, &type, &len);
+      if(val == NULL){
+        printf("ERROR: TLV type or length is truncated, which is unsupported.\n");
+        exit(-1);
+      }else{
+        ptr = val + len;
+        i ++;
+      }
+    }
+    ptr = buf + (ptr - end);
   }
 }
 
