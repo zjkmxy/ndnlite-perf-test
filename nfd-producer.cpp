@@ -93,7 +93,7 @@ main(int argc, char** argv)
         if(argc > 2){
             producer.run(argv[1], argv[2]);
         }else{
-            std::cout << "Usage: " << argv[0] << " <name> <file>" << std::endl;
+            std::cout << "Usage: " << argv[0] << " <name-prefix> <file>" << std::endl;
           
             return 0;
         }
