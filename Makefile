@@ -28,5 +28,5 @@ run-consumer: consumer
 
 clean:
 	rm -rf *.dSYM
-	rm $(TARGETS)
-	rm *.testfile
+	rm -rf $(TARGETS)
+	rm -rf *.testfile
