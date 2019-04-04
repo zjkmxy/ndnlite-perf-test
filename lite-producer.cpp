@@ -7,8 +7,6 @@
 #include <ndn-lite.h>
 #include "common.h"
 
-// TODO: I changed sender buffer size, hard coded
-
 ndn_name_t name_prefix;
 uint8_t buf[DATA_CHUNK_SIZE];
 uint8_t (*chunks)[DATA_CHUNK_SIZE];
@@ -118,6 +116,9 @@ int main(int argc, char *argv[]){
     ndn_face_destroy(&face->intf);
     return -1;
   }
+
+  int sendbuff = 16384;
+  setsockopt(face->sock, SOL_SOCKET, SO_SNDBUF, &sendbuff, sizeof(sendbuff));
 
   running = true;
   encoder_init(&encoder, buf, sizeof(buf));
