@@ -139,7 +139,7 @@ int main(int argc, char *argv[]){
   recver.join();
 
   clock_gettime(CLOCK_REALTIME, &tmEnd);
-  printf("Time used: %lf ms\n", timediff(tmEnd, tmStart));
+  printf("Time used: %.6lf sec\n", timediff(tmEnd, tmStart));
   
   delete[] interest;
   delete[] interest_size;
