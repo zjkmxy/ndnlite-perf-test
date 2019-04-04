@@ -6,7 +6,7 @@ Here are some programs which are used to compare the performace with NDN-Lite's 
 Install NFD
 ===========
 Both ndn-cxx and NFD are compiled with `-O0` by default, which may lead to an unfair comparision.
-So I install the latest release version 0.6.5 with optimized.
+So I install the latest release version 0.6.5 with optimized compiler flag.
 
 The following commands are what I used exactly. 
 I linked OpenSSL manually because it cannot be found automatically on my Mac,
@@ -53,10 +53,12 @@ make run-nfd
 
 To run the NDN-Lite producer:
 ```bash
+nfd-stop
 sudo make run-lite
 ```
 
-The two producers use the same Unix socket file `/var/run/nfd.sock`, so don't run both at the same time.
+The NDN-Lite producer and NFD use the same Unix socket file `/var/run/nfd.sock`,
+so don't run both at the same time.
 
 To run the consumer:
 ```bash
