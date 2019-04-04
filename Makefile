@@ -20,7 +20,7 @@ testfile: file-gen
 run-lite: lite-producer testfile
 	./lite-producer /example/testApp/randomData ./25600.testfile
 
-run-nfd: lite-producer testfile
+run-nfd: nfd-producer testfile
 	./nfd-producer /example/testApp/randomData ./25600.testfile
 
 run-consumer: consumer

@@ -1,0 +1,83 @@
+diff --git a/daemon/face/tcp-channel.cpp b/daemon/face/tcp-channel.cpp
+index 54a620c..5eb9d18 100644
+--- a/daemon/face/tcp-channel.cpp
++++ b/daemon/face/tcp-channel.cpp
+@@ -113,7 +113,7 @@ TcpChannel::createFace(ip::tcp::socket&& socket,
+       options.allowCongestionMarking = m_wantCongestionMarking;
+     }
+     else {
+-      options.allowCongestionMarking = params.wantCongestionMarking;
++      options.allowCongestionMarking = params.wantCongestionMarking ? true : false;
+     }
+ 
+     if (params.baseCongestionMarkingInterval) {
+diff --git a/daemon/face/udp-channel.cpp b/daemon/face/udp-channel.cpp
+index 6497c30..62e9a57 100644
+--- a/daemon/face/udp-channel.cpp
++++ b/daemon/face/udp-channel.cpp
+@@ -169,7 +169,7 @@ UdpChannel::createFace(const udp::Endpoint& remoteEndpoint,
+     options.allowCongestionMarking = m_wantCongestionMarking;
+   }
+   else {
+-    options.allowCongestionMarking = params.wantCongestionMarking;
++    options.allowCongestionMarking = params.wantCongestionMarking ? true : false;
+   }
+ 
+   if (params.baseCongestionMarkingInterval) {
+diff --git a/tools/nfdc/cs-module.cpp b/tools/nfdc/cs-module.cpp
+index fafd095..d903dd8 100644
+--- a/tools/nfdc/cs-module.cpp
++++ b/tools/nfdc/cs-module.cpp
+@@ -65,10 +65,10 @@ CsModule::config(ExecuteContext& ctx)
+     p.setCapacity(*capacity);
+   }
+   if (!indeterminate(enableAdmit)) {
+-    p.setFlagBit(ndn::nfd::BIT_CS_ENABLE_ADMIT, enableAdmit);
++    p.setFlagBit(ndn::nfd::BIT_CS_ENABLE_ADMIT, enableAdmit ? true : false);
+   }
+   if (!indeterminate(enableServe)) {
+-    p.setFlagBit(ndn::nfd::BIT_CS_ENABLE_SERVE, enableServe);
++    p.setFlagBit(ndn::nfd::BIT_CS_ENABLE_SERVE, enableServe ? true : false);
+   }
+ 
+   ctx.controller.start<ndn::nfd::CsConfigCommand>(p,
+diff --git a/tools/nfdc/face-module.cpp b/tools/nfdc/face-module.cpp
+index 7bde8bf..ffe7a91 100644
+--- a/tools/nfdc/face-module.cpp
++++ b/tools/nfdc/face-module.cpp
+@@ -203,7 +203,7 @@ FaceModule::create(ExecuteContext& ctx)
+       ControlParameters params;
+       params.setFaceId(respParams.getFaceId()).setFacePersistency(persistency);
+       if (!boost::logic::indeterminate(lpReliability)) {
+-        params.setFlagBit(ndn::nfd::BIT_LP_RELIABILITY_ENABLED, lpReliability);
++        params.setFlagBit(ndn::nfd::BIT_LP_RELIABILITY_ENABLED, lpReliability ? true : false);
+       }
+       ctx.controller.start<ndn::nfd::FaceUpdateCommand>(
+           params,
+@@ -222,11 +222,11 @@ FaceModule::create(ExecuteContext& ctx)
+ 
+       if (!boost::logic::indeterminate(lpReliability) &&
+           lpReliability != respParams.getFlagBit(ndn::nfd::BIT_LP_RELIABILITY_ENABLED)) {
+-        params.setFlagBit(ndn::nfd::BIT_LP_RELIABILITY_ENABLED, lpReliability);
++        params.setFlagBit(ndn::nfd::BIT_LP_RELIABILITY_ENABLED, lpReliability ? true : false);
+       }
+       if (!boost::logic::indeterminate(congestionMarking) &&
+           congestionMarking != respParams.getFlagBit(ndn::nfd::BIT_CONGESTION_MARKING_ENABLED)) {
+-        params.setFlagBit(ndn::nfd::BIT_CONGESTION_MARKING_ENABLED, congestionMarking);
++        params.setFlagBit(ndn::nfd::BIT_CONGESTION_MARKING_ENABLED, congestionMarking ? true : false);
+       }
+ 
+       if (baseCongestionMarkingIntervalMs) {
+@@ -258,10 +258,10 @@ FaceModule::create(ExecuteContext& ctx)
+     }
+     params.setFacePersistency(persistency);
+     if (!boost::logic::indeterminate(lpReliability)) {
+-      params.setFlagBit(ndn::nfd::BIT_LP_RELIABILITY_ENABLED, lpReliability);
++      params.setFlagBit(ndn::nfd::BIT_LP_RELIABILITY_ENABLED, lpReliability ? true : false);
+     }
+     if (!boost::logic::indeterminate(congestionMarking)) {
+-      params.setFlagBit(ndn::nfd::BIT_CONGESTION_MARKING_ENABLED, congestionMarking);
++      params.setFlagBit(ndn::nfd::BIT_CONGESTION_MARKING_ENABLED, congestionMarking ? true : false);
+     }
+     if (baseCongestionMarkingIntervalMs) {
+       params.setBaseCongestionMarkingInterval(time::milliseconds(*baseCongestionMarkingIntervalMs));
