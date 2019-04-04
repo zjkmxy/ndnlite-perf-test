@@ -1,6 +1,7 @@
 #include <cstdio>
 #include <cstdlib>
 #include <cerrno>
+#include <cstdint>
 #include "common.h"
 
 int maxCount = 0;

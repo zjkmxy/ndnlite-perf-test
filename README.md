@@ -36,11 +36,14 @@ Install NDN-Lite
 ```bash
 git clone https://github.com/named-data-iot/ndn-iot-package-over-posix.git --recursive
 cd ndn-iot-package-over-posix
+vim ndn-lite/ndn-constants.h
+  :%s/NDN_CONTENT_BUFFER_SIZE 256/NDN_CONTENT_BUFFER_SIZE 2048/g
+  :wq
 mkdir build
 cd build
 cmake -DCMAKE_BUILD_TYPE=Release -DDYNAMIC_LIB=YES ..
 make -j4
-make install
+sudo make install
 ```
 
 Run the test

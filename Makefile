@@ -3,24 +3,24 @@ TARGETS = consumer nfd-producer lite-producer file-gen
 all: $(TARGETS)
 
 consumer: consumer.cpp common.h
-	g++ -std=c++14 -lndn-lite $< -o $@ -O3
+	g++ -std=c++14 $< -o $@ -O3 -lndn-lite -lpthread
 
 nfd-producer: nfd-producer.cpp common.h
-	g++ -std=c++14 -lndn-cxx -lboost_system $< -o $@ -O3
+	g++ -std=c++14 $< -o $@ -O3 -lndn-cxx -lboost_system
 
 lite-producer: lite-producer.cpp common.h
-	g++ -std=c++14 -lndn-lite $< -o $@ -O3
+	g++ -std=c++14 $< -o $@ -O3 -lndn-lite
 
 file-gen: file-gen.cpp common.h
 	g++ -std=c++14 $< -o $@ -O3
 
-testfile: file-gen
+25600.testfile: file-gen
 	./file-gen 25600.testfile 25600
 
-run-lite: lite-producer testfile
+run-lite: lite-producer 25600.testfile
 	./lite-producer /example/testApp/randomData ./25600.testfile
 
-run-nfd: nfd-producer testfile
+run-nfd: nfd-producer 25600.testfile
 	./nfd-producer /example/testApp/randomData ./25600.testfile
 
 run-consumer: consumer

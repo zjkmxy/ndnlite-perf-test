@@ -4,6 +4,7 @@
 #include <stdlib.h>
 #include <sys/time.h>
 #include <errno.h>
+#include <signal.h>
 #include <ndn-lite.h>
 #include "common.h"
 
