@@ -7,6 +7,13 @@
 #include <signal.h>
 #include <ndn-lite.h>
 #include "common.h"
+#include "mem-monitor.hpp"
+
+//#define MONITOR_MEMORY
+
+#ifdef MONITOR_MEMORY
+static MemMonitor mem_monitor;
+#endif
 
 ndn_name_t name_prefix;
 uint8_t buf[DATA_CHUNK_SIZE];
@@ -118,7 +125,7 @@ int main(int argc, char *argv[]){
     return -1;
   }
 
-  int sendbuff = 16384;
+  int sendbuff = 65536;
   setsockopt(face->sock, SOL_SOCKET, SO_SNDBUF, &sendbuff, sizeof(sendbuff));
 
   running = true;
@@ -128,6 +135,14 @@ int main(int argc, char *argv[]){
   while(running){
     ndn_forwarder_process();
     usleep(10);
+#ifdef MONITOR_MEMORY
+    static int count = 0;
+    count += 1;
+    if(count == 1000){
+      mem_monitor.record();
+      count = 0;
+    }
+#endif
   }
 
   ndn_face_destroy(&face->intf);
