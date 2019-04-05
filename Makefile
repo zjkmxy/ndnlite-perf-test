@@ -5,7 +5,7 @@ all: $(TARGETS)
 consumer: consumer.cpp common.h
 	g++ -std=c++14 $< -o $@ -O3 -lndn-lite -lpthread
 
-nfd-producer: nfd-producer.cpp common.h
+nfd-producer: nfd-producer.cpp common.h mem-monitor.hpp mem-usage.hpp
 	g++ -std=c++14 $< -o $@ -O3 -lndn-cxx -lboost_system
 
 lite-producer: lite-producer.cpp common.h mem-monitor.hpp mem-usage.hpp

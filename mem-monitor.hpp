@@ -1,5 +1,6 @@
 #include <cstdio>
 #include <chrono>
+#include <cerrno>
 #include "mem-usage.hpp"
 using std::chrono::steady_clock;
 using std::chrono::duration_cast;
@@ -13,6 +14,9 @@ private:
 public:
   MemMonitor(){
     hfile = fopen("./mem-data.txt", "w");
+    if(!hfile){
+      printf("Create file failed: %d\n", errno);
+    }
     tbegin = steady_clock::now();
     record();
   }
