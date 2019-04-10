@@ -50,7 +50,9 @@ public:
 private:
     void
     recordMem(){
+#ifdef MONITOR_MEMORY
         mem_monitor.record();
+#endif
         m_scheduler.scheduleEvent(10_ms, [this]{ recordMem(); });
     }
 
