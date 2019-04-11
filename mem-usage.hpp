@@ -25,6 +25,7 @@
 // #include <unistd.h>
 // // #include <sys/resource.h>
 #include <sys/sysinfo.h>
+#include <fstream>
 #endif
 
 #ifdef __APPLE__
